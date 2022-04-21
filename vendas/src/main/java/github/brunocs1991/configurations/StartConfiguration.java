@@ -1,12 +1,10 @@
 package github.brunocs1991.configurations;
 
+import github.brunocs1991.anotations.Development;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
-@Configuration
-@Profile("development")
+@Development
 public class StartConfiguration {
 
     @Bean
