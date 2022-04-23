@@ -33,6 +33,9 @@ public class JpaApplication {
             boolean existe = clientesRepository.existsByNome("Bruno");
             System.out.println("Existe um cliente com nome bruno? " + existe);
 
+            List<Cliente> todos = clientesRepository.encontrarPorNome("Bruno");
+            todos.forEach(System.out::println);
+
 
 //            System.out.println("Atualizando");
 //            todos.forEach(c -> {
