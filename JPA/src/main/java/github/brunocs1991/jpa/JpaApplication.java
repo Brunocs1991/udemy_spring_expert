@@ -20,7 +20,7 @@ public class JpaApplication {
     @Bean
     CommandLineRunner init(@Autowired ClientesRepository clientesRepository) {
         return args -> {
-            System.out.println("salvando");
+
             Cliente cliente = new Cliente();
             cliente.setNome("Bruno");
             clientesRepository.save(cliente);
@@ -28,31 +28,32 @@ public class JpaApplication {
             Cliente cliente2 = new Cliente();
             cliente2.setNome("Costa");
             clientesRepository.save(cliente2);
-            System.out.println("Listando todos");
-            List<Cliente> todos = clientesRepository.findAll();
-            todos.forEach(System.out::println);
 
 
-            System.out.println("Atualizando");
-            todos.forEach(c -> {
-                c.setNome(c.getNome() + " atualizado.");
-                clientesRepository.save(c);
-            });
+            boolean existe = clientesRepository.existsByNome("Bruno");
+            System.out.println("Existe um cliente com nome bruno? " + existe);
 
-            todos = clientesRepository.findAll();
-            todos.forEach(System.out::println);
 
-            System.out.println("Filtrando");
-            clientesRepository.findByNomeLike("b").forEach(System.out::println);
-
-            System.out.println("Deletando");
-            clientesRepository.findAll().forEach(c -> clientesRepository.delete(c));
-            todos = clientesRepository.findAll();
-            if (todos.isEmpty()) {
-                System.out.println("Nenhum Cliente encontrado");
-            } else {
-                todos.forEach(System.out::println);
-            }
+//            System.out.println("Atualizando");
+//            todos.forEach(c -> {
+//                c.setNome(c.getNome() + " atualizado.");
+//                clientesRepository.save(c);
+//            });
+//
+//            todos = clientesRepository.findAll();
+//            todos.forEach(System.out::println);
+//
+//            System.out.println("Filtrando");
+//            clientesRepository.findByNomeLike("b").forEach(System.out::println);
+//
+//            System.out.println("Deletando");
+//            clientesRepository.findAll().forEach(c -> clientesRepository.delete(c));
+//            todos = clientesRepository.findAll();
+//            if (todos.isEmpty()) {
+//                System.out.println("Nenhum Cliente encontrado");
+//            } else {
+//                todos.forEach(System.out::println);
+//            }
         };
     }
 
