@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -13,20 +15,27 @@ import java.util.List;
 @Repository
 public class ClientesRepository {
 
-    private static String INSERT = "insert into cliente  (nome) values(?)";
+//    private static String INSERT = "insert into cliente  (nome) values(?)";
     private static String SELECT_ALL = "SELECT * FROM CLIENTE";
-    private static String UPDATE = "UPDATE CLIENTE SET NOME = ? WHERE ID =?";
+//    private static String UPDATE = "UPDATE CLIENTE SET NOME = ? WHERE ID =?";
     private static String DELETAR = "DELETE FROM cliente WHERE ID = ?";
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private EntityManager entityManager;
+
+    @Transactional
     public Cliente salvar(Cliente cliente) {
-        jdbcTemplate.update(INSERT, new Object[]{cliente.getNome()});
+//        jdbcTemplate.update(INSERT, new Object[]{cliente.getNome()});
+        entityManager.persist(cliente);
         return cliente;
     }
 
+    @Transactional
     public Cliente atualizar(Cliente cliente) {
-        jdbcTemplate.update(UPDATE, new Object[]{cliente.getNome(), cliente.getId()});
+//        jdbcTemplate.update(UPDATE, new Object[]{cliente.getNome(), cliente.getId()});
+        entityManager.merge(cliente);
         return cliente;
     }
 
