@@ -23,33 +23,31 @@ public class JpaApplication {
             System.out.println("salvando");
             Cliente cliente = new Cliente();
             cliente.setNome("Bruno");
-            clientesRepository.salvar(cliente);
+            clientesRepository.save(cliente);
 
             Cliente cliente2 = new Cliente();
             cliente2.setNome("Costa");
-            clientesRepository.salvar(cliente2);
+            clientesRepository.save(cliente2);
             System.out.println("Listando todos");
-            List<Cliente> todos = clientesRepository.obterTodos();
+            List<Cliente> todos = clientesRepository.findAll();
             todos.forEach(System.out::println);
 
 
             System.out.println("Atualizando");
             todos.forEach(c -> {
                 c.setNome(c.getNome() + " atualizado.");
-                clientesRepository.atualizar(c);
+                clientesRepository.save(c);
             });
 
-            todos = clientesRepository.obterTodos();
+            todos = clientesRepository.findAll();
             todos.forEach(System.out::println);
 
             System.out.println("Filtrando");
-            clientesRepository.buscarPorNome("un").forEach(System.out::println);
+            clientesRepository.findByNomeLike("b").forEach(System.out::println);
 
             System.out.println("Deletando");
-            clientesRepository.obterTodos().forEach(c -> {
-                clientesRepository.deletar(c);
-            });
-            todos = clientesRepository.obterTodos();
+            clientesRepository.findAll().forEach(c -> clientesRepository.delete(c));
+            todos = clientesRepository.findAll();
             if (todos.isEmpty()) {
                 System.out.println("Nenhum Cliente encontrado");
             } else {
