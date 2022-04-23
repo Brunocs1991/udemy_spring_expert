@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -39,28 +40,44 @@ public class ClientesRepository {
         return cliente;
     }
 
+    @Transactional
     public void deletar(Cliente cliente) {
-        this.deletar(cliente.getId());
+//        this.deletar(cliente.getId());
+        if(!entityManager.contains(cliente)){
+            cliente = entityManager.merge(cliente);
+        }
+        entityManager.remove(cliente);
     }
 
+    @Transactional
     public void deletar(Integer id) {
-        jdbcTemplate.update(DELETAR, new Object[]{id});
+//        jdbcTemplate.update(DELETAR, new Object[]{id});
+        Cliente cliente = entityManager.find(Cliente.class, id);
+        this.deletar(cliente);
     }
 
+    @Transactional(readOnly = true)
     public List<Cliente> buscarPorNome(String nome) {
-        return jdbcTemplate.<Cliente>query(SELECT_ALL.concat(" where nome like ?"), new Object[]{"%" + nome + "%"}, obterClienteMapper());
+//        return jdbcTemplate.<Cliente>query(SELECT_ALL.concat(" where nome like ?"), new Object[]{"%" + nome + "%"}, obterClienteMapper());
+        String jpql = "select c  from Cliente c where c.nome like :nome";
+        TypedQuery<Cliente> query = entityManager.createQuery(jpql, Cliente.class);
+        query.setParameter("nome", "%" +nome+ "%");
+        return query.getResultList();
+
     }
 
+    @Transactional(readOnly = true)
     public List<Cliente> obterTodos() {
-        return jdbcTemplate.query(SELECT_ALL, obterClienteMapper());
+//        return jdbcTemplate.query(SELECT_ALL, obterClienteMapper());
+        return entityManager.createQuery("select c from Cliente c", Cliente.class).getResultList();
     }
 
-    private RowMapper<Cliente> obterClienteMapper() {
-        return new RowMapper<Cliente>() {
-            @Override
-            public Cliente mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return new Cliente(rs.getInt("id"), rs.getString("nome"));
-            }
-        };
-    }
+//    private RowMapper<Cliente> obterClienteMapper() {
+//        return new RowMapper<Cliente>() {
+//            @Override
+//            public Cliente mapRow(ResultSet rs, int rowNum) throws SQLException {
+//                return new Cliente(rs.getInt("id"), rs.getString("nome"));
+//            }
+//        };
+//    }
 }

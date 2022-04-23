@@ -32,29 +32,29 @@ public class JpaApplication {
             List<Cliente> todos = clientesRepository.obterTodos();
             todos.forEach(System.out::println);
 
-//
-//            System.out.println("Atualizando");
-//            todos.forEach(c -> {
-//                c.setNome(c.getNome() + " atualizado.");
-//                clientesRepository.atualizar(c);
-//            });
-//
-//            todos = clientesRepository.obterTodos();
-//            todos.forEach(System.out::println);
-//
-//            System.out.println("Filtrando");
-//            clientesRepository.buscarPorNome("un").forEach(System.out::println);
-//
-//            System.out.println("Deletando");
-//            clientesRepository.obterTodos().forEach(c -> {
-//                clientesRepository.deletar(c);
-//            });
-//            todos = clientesRepository.obterTodos();
-//            if (todos.isEmpty()) {
-//                System.out.println("Nenhum Cliente encontrado");
-//            } else {
-//                todos.forEach(System.out::println);
-//            }
+
+            System.out.println("Atualizando");
+            todos.forEach(c -> {
+                c.setNome(c.getNome() + " atualizado.");
+                clientesRepository.atualizar(c);
+            });
+
+            todos = clientesRepository.obterTodos();
+            todos.forEach(System.out::println);
+
+            System.out.println("Filtrando");
+            clientesRepository.buscarPorNome("un").forEach(System.out::println);
+
+            System.out.println("Deletando");
+            clientesRepository.obterTodos().forEach(c -> {
+                clientesRepository.deletar(c);
+            });
+            todos = clientesRepository.obterTodos();
+            if (todos.isEmpty()) {
+                System.out.println("Nenhum Cliente encontrado");
+            } else {
+                todos.forEach(System.out::println);
+            }
         };
     }
 
