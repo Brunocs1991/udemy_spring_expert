@@ -1,5 +1,6 @@
 package br.com.github.brunocs1991.apirestvendas.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,6 +23,7 @@ public class Cliente {
     @Column(name = "nome", length = 100)
     private String nome;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
     private Set<Pedido> pedidos;
 }
