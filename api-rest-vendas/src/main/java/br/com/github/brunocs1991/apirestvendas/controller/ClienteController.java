@@ -3,10 +3,13 @@ package br.com.github.brunocs1991.apirestvendas.controller;
 import br.com.github.brunocs1991.apirestvendas.entity.Cliente;
 import br.com.github.brunocs1991.apirestvendas.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -47,10 +50,19 @@ public class ClienteController {
     @PutMapping("/{id}")
     @ResponseBody
     public ResponseEntity update(@PathVariable Integer id, @RequestBody Cliente cliente) {
-        return clienteRepository.findById(id).map(clienteExistente ->{
+        return clienteRepository.findById(id).map(clienteExistente -> {
             cliente.setId(clienteExistente.getId());
             clienteRepository.save(cliente);
             return ResponseEntity.noContent().build();
         }).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping
+    @ResponseBody
+    public ResponseEntity find(Cliente filtro) {
+        ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreCase().withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+        Example example = Example.of(filtro, matcher);
+        List<Cliente> clientes = clienteRepository.findAll(example);
+        return ResponseEntity.ok(clientes);
     }
 }
