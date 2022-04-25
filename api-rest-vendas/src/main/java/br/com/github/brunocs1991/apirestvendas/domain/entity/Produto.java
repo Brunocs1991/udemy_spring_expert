@@ -1,4 +1,4 @@
-package br.com.github.brunocs1991.apirestvendas.entity;
+package br.com.github.brunocs1991.apirestvendas.domain.entity;
 
 import lombok.Getter;
 import lombok.Setter;

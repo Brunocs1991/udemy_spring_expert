@@ -1,4 +1,4 @@
-package br.com.github.brunocs1991.apirestvendas.controller;
+package br.com.github.brunocs1991.apirestvendas.rest.controller;
 
 import br.com.github.brunocs1991.apirestvendas.service.PedidoService;
 import org.springframework.web.bind.annotation.RequestMapping;

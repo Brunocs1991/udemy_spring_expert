@@ -1,7 +1,7 @@
-package br.com.github.brunocs1991.apirestvendas.controller;
+package br.com.github.brunocs1991.apirestvendas.rest.controller;
 
-import br.com.github.brunocs1991.apirestvendas.entity.Produto;
-import br.com.github.brunocs1991.apirestvendas.repository.ProdutoRepository;
+import br.com.github.brunocs1991.apirestvendas.domain.entity.Produto;
+import br.com.github.brunocs1991.apirestvendas.domain.repository.ProdutoRepository;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;

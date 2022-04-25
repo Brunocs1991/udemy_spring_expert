@@ -1,7 +1,7 @@
-package br.com.github.brunocs1991.apirestvendas.controller;
+package br.com.github.brunocs1991.apirestvendas.rest.controller;
 
-import br.com.github.brunocs1991.apirestvendas.entity.Cliente;
-import br.com.github.brunocs1991.apirestvendas.repository.ClienteRepository;
+import br.com.github.brunocs1991.apirestvendas.domain.entity.Cliente;
+import br.com.github.brunocs1991.apirestvendas.domain.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
