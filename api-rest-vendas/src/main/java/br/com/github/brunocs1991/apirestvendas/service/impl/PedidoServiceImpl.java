@@ -9,15 +9,21 @@ import br.com.github.brunocs1991.apirestvendas.domain.repository.ItemPedidoRepos
 import br.com.github.brunocs1991.apirestvendas.domain.repository.PedidoRepository;
 import br.com.github.brunocs1991.apirestvendas.domain.repository.ProdutoRepository;
 import br.com.github.brunocs1991.apirestvendas.exception.RegraNegocioException;
+import br.com.github.brunocs1991.apirestvendas.rest.dto.InformacaoItemPedidoDTO;
+import br.com.github.brunocs1991.apirestvendas.rest.dto.InformacoesPedidoDTO;
 import br.com.github.brunocs1991.apirestvendas.rest.dto.ItemPedidoDTO;
 import br.com.github.brunocs1991.apirestvendas.rest.dto.PedidoDTO;
 import br.com.github.brunocs1991.apirestvendas.service.PedidoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,6 +50,38 @@ public class PedidoServiceImpl implements PedidoService {
         itemPedidoRepository.saveAll(itemPedidos);
         pedido.setItens(itemPedidos);
         return pedido;
+    }
+
+    @Override
+    public Optional<Pedido> ObterPedidoCompleto(Integer id) {
+        return pedidoRepository.findByIdFetchItens(id);
+    }
+
+    @Override
+    public InformacoesPedidoDTO converter(Pedido pedido) {
+        return InformacoesPedidoDTO
+                .builder()
+                .codigo(pedido.getId())
+                .dataPedido(pedido.getDataPedido().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")))
+                .cpf(pedido.getCliente().getCpf())
+                .nomeCliente(pedido.getCliente().getNome())
+                .total(pedido.getTotal())
+                .items(this.converter(pedido.getItens()))
+                .build();
+    }
+
+    private List<InformacaoItemPedidoDTO> converter(List<ItemPedido> items) {
+        if (CollectionUtils.isEmpty(items)) {
+            return Collections.emptyList();
+        }
+
+        return items.stream().map(item -> InformacaoItemPedidoDTO
+                .builder()
+                .descricaoProduto(item.getProduto().getDescricao())
+                .precoUnitario(item.getProduto().getPreco())
+                .quantidade(item.getQuantidade())
+                .build()
+        ).collect(Collectors.toList());
     }
 
     private List<ItemPedido> converterItems(Pedido pedido, List<ItemPedidoDTO> items) {
