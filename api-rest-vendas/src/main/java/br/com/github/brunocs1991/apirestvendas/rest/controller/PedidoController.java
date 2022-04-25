@@ -6,19 +6,17 @@ import br.com.github.brunocs1991.apirestvendas.rest.dto.AtualizacaoStatusPedidoD
 import br.com.github.brunocs1991.apirestvendas.rest.dto.InformacoesPedidoDTO;
 import br.com.github.brunocs1991.apirestvendas.rest.dto.PedidoDTO;
 import br.com.github.brunocs1991.apirestvendas.service.PedidoService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("api/pedidos")
+@RequiredArgsConstructor
 public class PedidoController {
 
-    private PedidoService pedidoService;
-
-    public PedidoController(PedidoService pedidoService) {
-        this.pedidoService = pedidoService;
-    }
+    private final PedidoService pedidoService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
