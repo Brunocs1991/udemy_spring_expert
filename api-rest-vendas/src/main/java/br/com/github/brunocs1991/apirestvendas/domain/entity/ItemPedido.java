@@ -1,13 +1,13 @@
 package br.com.github.brunocs1991.apirestvendas.domain.entity;
 
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "tbl_item_pedido")
 public class ItemPedido {
