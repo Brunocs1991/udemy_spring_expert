@@ -20,9 +20,7 @@ public class ClienteController {
 
     @GetMapping("/{id}")
     public Cliente getClienteById(@PathVariable Integer id) {
-        return clienteRepository.findById(id).orElseThrow(() -> {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado");
-        });
+        return clienteRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
     }
 
     @PostMapping
