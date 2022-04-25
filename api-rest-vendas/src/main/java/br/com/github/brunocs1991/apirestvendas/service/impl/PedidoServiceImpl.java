@@ -9,6 +9,7 @@ import br.com.github.brunocs1991.apirestvendas.domain.repository.ClienteReposito
 import br.com.github.brunocs1991.apirestvendas.domain.repository.ItemPedidoRepository;
 import br.com.github.brunocs1991.apirestvendas.domain.repository.PedidoRepository;
 import br.com.github.brunocs1991.apirestvendas.domain.repository.ProdutoRepository;
+import br.com.github.brunocs1991.apirestvendas.exception.PedidoNaoEncontradoException;
 import br.com.github.brunocs1991.apirestvendas.exception.RegraNegocioException;
 import br.com.github.brunocs1991.apirestvendas.rest.dto.InformacaoItemPedidoDTO;
 import br.com.github.brunocs1991.apirestvendas.rest.dto.InformacoesPedidoDTO;
@@ -55,7 +56,7 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
-    public Optional<Pedido> ObterPedidoCompleto(Integer id) {
+    public Optional<Pedido> obterPedidoCompleto(Integer id) {
         return pedidoRepository.findByIdFetchItens(id);
     }
 
@@ -71,6 +72,15 @@ public class PedidoServiceImpl implements PedidoService {
                 .status(pedido.getStatus().name())
                 .items(this.converter(pedido.getItens()))
                 .build();
+    }
+
+    @Override
+    @Transactional
+    public void atualizaStatus(Integer id, StatusPedido statusPedido) {
+        pedidoRepository.findById(id).map(pedido -> {
+            pedido.setStatus(statusPedido);
+            return  pedidoRepository.save(pedido);
+        }).orElseThrow(() -> new PedidoNaoEncontradoException());
     }
 
     private List<InformacaoItemPedidoDTO> converter(List<ItemPedido> items) {

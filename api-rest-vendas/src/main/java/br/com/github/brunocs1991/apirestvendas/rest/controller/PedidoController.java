@@ -1,6 +1,8 @@
 package br.com.github.brunocs1991.apirestvendas.rest.controller;
 
 import br.com.github.brunocs1991.apirestvendas.domain.entity.Pedido;
+import br.com.github.brunocs1991.apirestvendas.domain.enums.StatusPedido;
+import br.com.github.brunocs1991.apirestvendas.rest.dto.AtualizacaoStatusPedidoDTO;
 import br.com.github.brunocs1991.apirestvendas.rest.dto.InformacoesPedidoDTO;
 import br.com.github.brunocs1991.apirestvendas.rest.dto.PedidoDTO;
 import br.com.github.brunocs1991.apirestvendas.service.PedidoService;
@@ -27,8 +29,14 @@ public class PedidoController {
 
     @GetMapping("/{id}")
     public InformacoesPedidoDTO getById(@PathVariable Integer id) {
-        return pedidoService.ObterPedidoCompleto(id).map( p ->
+        return pedidoService.obterPedidoCompleto(id).map(p ->
              pedidoService.converter(p)
         ).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pedido não encontrado"));
+    }
+
+    @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateStatus(@PathVariable Integer id, @RequestBody AtualizacaoStatusPedidoDTO dtoStatus){
+        pedidoService.atualizaStatus(id, StatusPedido.valueOf(dtoStatus.getNovoStatus()));
     }
 }
