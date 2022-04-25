@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("api/pedidos")
 @RequiredArgsConstructor
@@ -20,7 +22,7 @@ public class PedidoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Integer save(@RequestBody PedidoDTO pedidoDTO) {
+    public Integer save(@RequestBody @Valid PedidoDTO pedidoDTO) {
         Pedido pedido = pedidoService.salvar(pedidoDTO);
         return pedido.getId();
     }
