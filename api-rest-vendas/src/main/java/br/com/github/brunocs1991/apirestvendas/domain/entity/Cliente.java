@@ -2,6 +2,7 @@ package br.com.github.brunocs1991.apirestvendas.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -24,6 +25,8 @@ public class Cliente {
     private String nome;
 
     @Column(name = "cpf", length = 11)
+    @NotEmpty(message = "Campo CPF e obrigatório")
+    @CPF(message = "Informe um CPF válido")
     private String cpf;
 
     @JsonIgnore
