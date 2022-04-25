@@ -4,6 +4,7 @@ import br.com.github.brunocs1991.apirestvendas.domain.entity.Cliente;
 import br.com.github.brunocs1991.apirestvendas.domain.entity.ItemPedido;
 import br.com.github.brunocs1991.apirestvendas.domain.entity.Pedido;
 import br.com.github.brunocs1991.apirestvendas.domain.entity.Produto;
+import br.com.github.brunocs1991.apirestvendas.domain.enums.StatusPedido;
 import br.com.github.brunocs1991.apirestvendas.domain.repository.ClienteRepository;
 import br.com.github.brunocs1991.apirestvendas.domain.repository.ItemPedidoRepository;
 import br.com.github.brunocs1991.apirestvendas.domain.repository.PedidoRepository;
@@ -45,6 +46,7 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.setTotal(pedidoDTO.getTotal());
         pedido.setDataPedido(LocalDate.now());
         pedido.setCliente(cliente);
+        pedido.setStatus(StatusPedido.REALIZADO);
         List<ItemPedido> itemPedidos = this.converterItems(pedido, pedidoDTO.getItens());
         pedidoRepository.save(pedido);
         itemPedidoRepository.saveAll(itemPedidos);
@@ -66,6 +68,7 @@ public class PedidoServiceImpl implements PedidoService {
                 .cpf(pedido.getCliente().getCpf())
                 .nomeCliente(pedido.getCliente().getNome())
                 .total(pedido.getTotal())
+                .status(pedido.getStatus().name())
                 .items(this.converter(pedido.getItens()))
                 .build();
     }
