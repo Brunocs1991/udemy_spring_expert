@@ -28,13 +28,13 @@ public class PedidoController {
     @GetMapping("/{id}")
     public InformacoesPedidoDTO getById(@PathVariable Integer id) {
         return pedidoService.obterPedidoCompleto(id).map(p ->
-             pedidoService.converter(p)
+                pedidoService.converter(p)
         ).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pedido não encontrado"));
     }
 
     @PatchMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateStatus(@PathVariable Integer id, @RequestBody AtualizacaoStatusPedidoDTO dtoStatus){
+    public void updateStatus(@PathVariable Integer id, @RequestBody AtualizacaoStatusPedidoDTO dtoStatus) {
         pedidoService.atualizaStatus(id, StatusPedido.valueOf(dtoStatus.getNovoStatus()));
     }
 }
