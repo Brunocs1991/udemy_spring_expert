@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name ="tbl_produto")
+@Table(name ="produto")
 public class Produto {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -1,29 +1,39 @@
 package br.com.github.brunocs1991.apirestvendas.service.impl;
 
+import br.com.github.brunocs1991.apirestvendas.domain.entity.Usuario;
+import br.com.github.brunocs1991.apirestvendas.domain.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class UsuarioServiceImpl implements UserDetailsService {
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+
+    private final UsuarioRepository usuarioRepository;
+
+    @Transactional
+    public Usuario salvar(Usuario usuario) {
+        return usuarioRepository.save(usuario);
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if(!username.equals("ciclano")){
-            throw new UsernameNotFoundException("Usuário não encontrado na base.");
-        }
+        Usuario usuario = this.usuarioRepository.findByLogin(username).orElseThrow(
+                () -> new UsernameNotFoundException("Usuário não encontrado na base de dados")
+        );
+
+        String[] roles = usuario.isAdmin() ? new String[]{"ADMIN", "USER"} : new String[]{"USER"};
+
         return User
                 .builder()
-                .password(passwordEncoder.encode("123"))
-                .username("ciclano")
-                .roles("USER", "ADMIN")
+                .username(usuario.getLogin())
+                .password(usuario.getSenha())
+                .roles(roles)
                 .build();
     }
 }

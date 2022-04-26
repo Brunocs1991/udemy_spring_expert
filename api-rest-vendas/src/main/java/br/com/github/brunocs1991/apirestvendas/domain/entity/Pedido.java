@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tbl_pedido")
+@Table(name = "pedido")
 public class Pedido {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
