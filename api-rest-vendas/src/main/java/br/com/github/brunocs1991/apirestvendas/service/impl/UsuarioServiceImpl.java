@@ -2,6 +2,7 @@ package br.com.github.brunocs1991.apirestvendas.service.impl;
 
 import br.com.github.brunocs1991.apirestvendas.domain.entity.Usuario;
 import br.com.github.brunocs1991.apirestvendas.domain.repository.UsuarioRepository;
+import br.com.github.brunocs1991.apirestvendas.rest.dto.UsuarioDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,8 +18,14 @@ public class UsuarioServiceImpl implements UserDetailsService {
     private final UsuarioRepository usuarioRepository;
 
     @Transactional
-    public Usuario salvar(Usuario usuario) {
-        return usuarioRepository.save(usuario);
+    public UsuarioDTO salvar(Usuario usuario) {
+        usuarioRepository.save(usuario);
+        return UsuarioDTO
+                .builder()
+                .codigo(usuario.getId())
+                .admin(usuario.isAdmin())
+                .login(usuario.getLogin())
+                .build();
     }
 
     @Override
