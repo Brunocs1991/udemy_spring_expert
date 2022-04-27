@@ -25,14 +25,14 @@ public class JwtService {
         long expString = Long.parseLong(expiracao);
         LocalDateTime dataHoraExpiracao = LocalDateTime.now().plusMinutes(expString);
         Date data = Date.from(dataHoraExpiracao.atZone(ZoneId.systemDefault()).toInstant());
-        HashMap<String, Object> claims = new HashMap<>();
-        claims.put("email", "teste@gmail.com");
-        claims.put("roles", "admin");
+//        HashMap<String, Object> claims = new HashMap<>();
+//        claims.put("email", "teste@gmail.com");
+//        claims.put("roles", "admin");
         return Jwts
                 .builder()
                 .setSubject(usuario.getLogin())
                 .setExpiration(data)
-                .setClaims(claims)
+//                .setClaims(claims)
                 .signWith(SignatureAlgorithm.HS512, this.chaveAssinatura)
                 .compact();
     }

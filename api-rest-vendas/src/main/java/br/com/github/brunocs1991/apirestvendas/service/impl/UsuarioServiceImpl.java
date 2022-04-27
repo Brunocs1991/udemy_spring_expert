@@ -2,20 +2,28 @@ package br.com.github.brunocs1991.apirestvendas.service.impl;
 
 import br.com.github.brunocs1991.apirestvendas.domain.entity.Usuario;
 import br.com.github.brunocs1991.apirestvendas.domain.repository.UsuarioRepository;
+import br.com.github.brunocs1991.apirestvendas.exception.SenhaInvalidaException;
 import br.com.github.brunocs1991.apirestvendas.rest.dto.UsuarioDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@RequiredArgsConstructor
 public class UsuarioServiceImpl implements UserDetailsService {
 
-    private final UsuarioRepository usuarioRepository;
+    @Autowired
+    @Lazy
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
 
     @Transactional
     public UsuarioDTO salvar(Usuario usuario) {
@@ -26,6 +34,15 @@ public class UsuarioServiceImpl implements UserDetailsService {
                 .admin(usuario.isAdmin())
                 .login(usuario.getLogin())
                 .build();
+    }
+
+    public UserDetails autenticar(Usuario usuario) {
+        UserDetails user = loadUserByUsername(usuario.getLogin());
+            boolean senhasBatem = passwordEncoder.matches(usuario.getSenha(), user.getPassword());
+        if (senhasBatem) {
+            return user;
+        }
+        throw new SenhaInvalidaException();
     }
 
     @Override

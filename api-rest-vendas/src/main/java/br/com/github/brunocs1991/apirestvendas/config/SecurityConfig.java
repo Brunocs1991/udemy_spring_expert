@@ -20,6 +20,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+
     private final UsuarioServiceImpl usuarioService;
     private final JwtService jwtService;
 
